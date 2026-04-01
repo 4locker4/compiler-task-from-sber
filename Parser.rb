@@ -8,7 +8,7 @@ require 'json'
 # If we can, we will expand the fields size
 #
 
-module compile_test
+module CompileTest
   class InputParser
 
       # JSON struct:
@@ -16,19 +16,24 @@ module compile_test
       # fields[ fields_names : fields_size ], 
       # instructions[ insns[ insns_names ], operands[ fields_names ], format[ format_name ], comment[ useless ]]
 
-    def parse(json_f)
+    attr_reader :json_f
+
+    def initialize(json_f)
+      @json_f = json_f
+    end
+
+    def parse
 
       begin
-        json_str = File.read(json_f)
+        json_str = File.read(@json_f)
         data = JSON.parse(json_str)     
       rescue Errno::ENOENT
-        raise "File not found #{json_f}"
+        raise "File not found #{@json_f}"
       end
     
     # In spec states that this is a fully valid JSON file. So there is no verification in JSON-format here #
 
-      return data
-
+      data
     end
   end
 end
