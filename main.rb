@@ -1,5 +1,5 @@
 require_relative 'Parser'
-require_relative 'Generator'
+require_relative 'FieldAnalyzer'
 require_relative 'Allocator'
 
 def main
