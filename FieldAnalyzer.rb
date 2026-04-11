@@ -1,17 +1,4 @@
 module CompileTest
-
-  # JSON struct:
-  # length[ num  = one_instr_length ], 
-  # fields[ fields_names : fields_size ], 
-  # instructions[ insns[ insns_names ], operands[ fields_names ], format[ format_name ], comment[ useless ]]
-
-  # I want to create a bit counter for every insn
-  # In the beginning I will count how many bits it have. Than I will choose filed, which I could increase.
-  # If there is no fields available to increase, I will create a reservation_field
-
-  # First of all, I need to count sizes of every field, then process every instr
-  
-  # Separated funt for 
   class FieldAnalyzer
 
     attr_reader :data
@@ -34,7 +21,7 @@ module CompileTest
         curr_instr_len = format_len + opcode_len + operands_size
 
         # if curr_instr_len < @length we will add the difference into last field, if we can
-        processed_format = Hash.new(0)
+        processed_format = {}
         
         if format_len != 0
           process_format_field(processed_format, format_len)
@@ -61,6 +48,7 @@ module CompileTest
     end
 
     def process_oprnds_field(processed_format, operands, curr_instr_len)
+      processed_format[:fields] ||= []
       operands.each do |operand|
         size, curr_instr_len = get_oprnd_size(operand, curr_instr_len)
 
@@ -107,18 +95,16 @@ module CompileTest
     end
 
     def field_size(field_name)
-      field_hash = @fields.find{ |f| f.key?(field_name) }
+      field_hash = @fields.find { |f| f.key?(field_name) }
       raise "Unknown field: #{field_name}" unless field_hash
-
-      size_str = @fields[field_hash]
-
+    
+      size_str = field_hash[field_name]
+    
       if size_str.start_with?('>=')
         size_str.gsub('>=', '').to_i
       else
         size_str.to_i
       end
-
-      size_str
     end
 
     def sum_operands_size(operands)
@@ -132,7 +118,7 @@ module CompileTest
       Math.log2(num_formats).ceil # f_bits
     end
 
-    def opcod_num_len(format)
+    def opcode_num_len(format)
       num_insns = format['insns'].size
       return 0 if num_insns <= 1
 

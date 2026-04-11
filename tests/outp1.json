@@ -1,0 +1,56 @@
+[
+  {
+    "f_bits": 2,
+    "opcode_bits": 4,
+    "fields": [
+      {
+        "oprnd_name": "R0",
+        "oprnd_size": 5
+      },
+      {
+        "oprnd_name": "R1",
+        "oprnd_size": 5
+      },
+      {
+        "oprnd_name": "R2",
+        "oprnd_size": 5
+      }
+    ],
+    "RES0": 4
+  },
+  {
+    "f_bits": 2,
+    "opcode_bits": 4,
+    "fields": [
+      {
+        "oprnd_name": "R0",
+        "oprnd_size": 5
+      },
+      {
+        "oprnd_name": "R1",
+        "oprnd_size": 5
+      },
+      {
+        "oprnd_name": "imm",
+        "oprnd_size": 9
+      }
+    ]
+  },
+  {
+    "f_bits": 2,
+    "fields": [
+      {
+        "oprnd_name": "R0",
+        "oprnd_size": 5
+      },
+      {
+        "oprnd_name": "code",
+        "oprnd_size": 6
+      },
+      {
+        "oprnd_name": "disp",
+        "oprnd_size": 12
+      }
+    ]
+  }
+]
