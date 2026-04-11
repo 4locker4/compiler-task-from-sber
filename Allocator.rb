@@ -13,16 +13,41 @@ module CompileTest
   
   class BitAllocator
 
-    attr_reader :data, :processed_formats
+    attr_reader :data_completed, :processed_formats
 
-    def initialize(data_completed)
+    def initialize(data_completed, processed_formats)
       @length = data_completed['length']
       @instructions = data_completed['instructions']
       @processed_formats = processed_formats
+      @res_insns = []
     end
 
     def resolve_fields
-      
+      return if @instructions.size == 0 
+      f_bits_size = Math.log2(@instructions.size).ceil
+
+      @instructions.each_with_index do |format, f_index|
+        format_name = format['format'].to_sym
+        opcode_bits_size = Math.log2(format['insns'].size).ceil
+
+        f_bits = f_index.to_s(2).rjust(f_bits_size, '0')
+        format['insns'].each_with_index do |insn_name, opcode|
+          @res_insns << {
+            insn: insn_name,
+            format: format_name,
+            fields: @processed_formats[format_name].transform_values(&:dup)
+          }
+
+          @res_insns.last[:fields][:f_bits][:value] = f_bits
+
+          if @res_insns.last[:fields][:opcode_bits]
+            @res_insns.last[:fields][:opcode_bits][:value] = 
+              opcode.to_s(2).rjust(opcode_bits_size, '0')
+          end
+        end
+      end
+
+      @res_insns
     end
   end
 end

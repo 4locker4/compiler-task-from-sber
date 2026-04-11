@@ -11,51 +11,60 @@ module CompileTest
 
     def process_instruction_struct
       format_len = format_num_len()
-      all_processed_formats = []
+      all_processed_formats = {}
 
-      @instructions.each_with_index do |format, format_num|
+      @instructions.each_with_index do |format, f_index|
       # Here we need to process format fields. We need to know exact size of every field
         opcode_len = opcode_num_len(format)
         operands_size = sum_operands_size(format['operands'])
-
         curr_instr_len = format_len + opcode_len + operands_size
 
         # if curr_instr_len < @length we will add the difference into last field, if we can
         processed_format = {}
-        
+        bit_counter = @length - 1
+
         if format_len != 0
-          process_format_field(processed_format, format_len)
+          bit_counter = process_format_field(processed_format, format_len, bit_counter)
         end
         
         if opcode_len != 0
-          process_opcode_field(processed_format, opcode_len)
+          bit_counter = process_opcode_field(processed_format, opcode_len, bit_counter)
         end
-
-        curr_instr_len = process_oprnds_field(processed_format, format['operands'], curr_instr_len)
+      
+        curr_instr_len = process_oprnds_field(processed_format, format['operands'], curr_instr_len, bit_counter)
 
         if curr_instr_len < @length
           process_padding_field(processed_format, curr_instr_len)
         end
 
-        all_processed_formats << processed_format
+        all_processed_formats[format['format'].to_sym] = processed_format
       end
 
       all_processed_formats
     end
 
     def process_padding_field(processed_format, curr_instr_len)
-      processed_format[:RES0] = @length - curr_instr_len
+      processed_format[:fields] << {
+        oprnd_name: "RES0",
+        msb: @length - curr_instr_len - 1,
+        lsb: 0,
+        value: "0" * (@length - curr_instr_len)
+      }
     end
 
-    def process_oprnds_field(processed_format, operands, curr_instr_len)
+    def process_oprnds_field(processed_format, operands, curr_instr_len, bit_counter)
       processed_format[:fields] ||= []
       operands.each do |operand|
         size, curr_instr_len = get_oprnd_size(operand, curr_instr_len)
 
         processed_format[:fields] << {
           oprnd_name: operand,
-          oprnd_size: size
+          msb: bit_counter,
+          lsb: bit_counter - size + 1,
+          value: "+"
         }
+
+        bit_counter -= size
       end
 
       curr_instr_len  # Return updated value
@@ -86,12 +95,26 @@ module CompileTest
 
     # I put this into separated function, because if we need to process it 
     # any other ways, it will be very helpful
-    def process_format_field(processed_format, format_len)
-      processed_format[:f_bits] = format_len
+    def process_format_field(processed_format, format_len, bit_counter)
+      processed_format[:f_bits] = {
+          oprnd_name: "F",
+          msb: bit_counter,
+          lsb: bit_counter - format_len + 1,
+          value: nil
+      }
+
+      bit_counter - format_len
     end
 
-    def process_opcode_field(processed_format, opcode_len)
-      processed_format[:opcode_bits] = opcode_len
+    def process_opcode_field(processed_format, opcode_len, bit_counter)
+      processed_format[:opcode_bits] = {
+          oprnd_name: "opcode",
+          msb: bit_counter,
+          lsb: bit_counter - opcode_len + 1,
+          value: nil
+      }
+
+      bit_counter - opcode_len
     end
 
     def field_size(field_name)
