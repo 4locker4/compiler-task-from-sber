@@ -1,0 +1,15 @@
+{
+  "length": "8",
+  "fields": [
+    { "R0": "3" },
+    { "R1": "3" }
+  ],
+  "instructions": [
+    {
+      "insns": ["add", "sub"],
+      "operands": ["R0", "R1"],
+      "format": "tiny",
+      "comment": "Minimal 8-bit instruction"
+    }
+  ]
+}

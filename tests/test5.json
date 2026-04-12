@@ -1,0 +1,29 @@
+{
+  "length": "24",
+  "fields": [
+    { "R0": "4" },
+    { "R1": "4" },
+    { "offset": ">=6" },
+    { "data": ">=8" }
+  ],
+  "instructions": [
+    {
+      "insns": ["push", "pop"],
+      "operands": ["R0"],
+      "format": "stack",
+      "comment": "Stack operations"
+    },
+    {
+      "insns": ["jmp", "call", "ret"],
+      "operands": ["offset"],
+      "format": "control",
+      "comment": "Control flow"
+    },
+    {
+      "insns": ["mov"],
+      "operands": ["R0", "R1", "data"],
+      "format": "transfer",
+      "comment": "Data transfer"
+    }
+  ]
+}

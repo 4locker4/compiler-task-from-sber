@@ -1,0 +1,13 @@
+{
+  "length": "16",
+  "fields": [
+  ],
+  "instructions": [
+    {
+      "insns": ["nop"],
+      "operands": [],
+      "format": "nullinstr",
+      "comment": "Null instruction"
+    }
+  ]
+}

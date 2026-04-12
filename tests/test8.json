@@ -1,0 +1,43 @@
+{
+  "length": "32",
+  "fields": [
+    { "R0": "5" },
+    { "R1": "5" },
+    { "R2": "5" },
+    { "imm8": "8" },
+    { "imm16": ">=16" },
+    { "disp": ">=12" }
+  ],
+  "instructions": [
+    {
+      "insns": ["add", "sub", "and", "or"],
+      "operands": ["R0", "R1", "R2"],
+      "format": "alu",
+      "comment": "ALU operations"
+    },
+    {
+      "insns": ["load", "store"],
+      "operands": ["R0", "imm16"],
+      "format": "mem",
+      "comment": "Memory access"
+    },
+    {
+      "insns": ["jmp"],
+      "operands": ["disp"],
+      "format": "branch",
+      "comment": "Unconditional branch"
+    },
+    {
+      "insns": ["beq", "bne", "blt", "bgt"],
+      "operands": ["R0", "R1", "disp"],
+      "format": "cond",
+      "comment": "Conditional branches"
+    },
+    {
+      "insns": ["push", "pop", "call", "ret", "nop", "halt"],
+      "operands": ["R0", "imm8"],
+      "format": "misc",
+      "comment": "Miscellaneous"
+    }
+  ]
+}

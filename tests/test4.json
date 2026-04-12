@@ -1,0 +1,25 @@
+{
+  "length": "32",
+  "fields": [
+    { "R0": "5" },
+    { "R1": "5" },
+    { "R2": "5" },
+    { "R3": "5" },
+    { "imm": ">=16" },
+    { "addr": ">=20" }
+  ],
+  "instructions": [
+    {
+      "insns": ["add", "sub", "mul", "div"],
+      "operands": ["R0", "R1", "R2", "R3"],
+      "format": "arith",
+      "comment": "4 instructions → 2 bits opcode"
+    },
+    {
+      "insns": ["load", "store"],
+      "operands": ["R0", "addr"],
+      "format": "memory",
+      "comment": "2 instructions → 1 bit opcode"
+    }
+  ]
+}

@@ -23,11 +23,11 @@ module CompileTest
         processed_format = {}
         bit_counter = @length - 1
 
-        if format_len != 0
+        if format_len > 0
           bit_counter = process_format_field(processed_format, format_len, bit_counter)
         end
         
-        if opcode_len != 0
+        if opcode_len > 0
           bit_counter = process_opcode_field(processed_format, opcode_len, bit_counter)
         end
       
@@ -44,7 +44,7 @@ module CompileTest
     end
 
     def process_padding_field(processed_format, curr_instr_len)
-      processed_format[:fields] << {
+      processed_format[:oprnds] << {
         oprnd_name: "RES0",
         msb: @length - curr_instr_len - 1,
         lsb: 0,
@@ -53,11 +53,11 @@ module CompileTest
     end
 
     def process_oprnds_field(processed_format, operands, curr_instr_len, bit_counter)
-      processed_format[:fields] ||= []
+      processed_format[:oprnds] ||= []
       operands.each do |operand|
         size, curr_instr_len = get_oprnd_size(operand, curr_instr_len)
 
-        processed_format[:fields] << {
+        processed_format[:oprnds] << {
           oprnd_name: operand,
           msb: bit_counter,
           lsb: bit_counter - size + 1,

@@ -1,0 +1,16 @@
+{
+  "length": "32",
+  "fields": [
+    { "R0": "5" },
+    { "R1": "5" }
+  ],
+  "instructions": [
+    {
+      "insns": ["op0", "op1", "op2", "op3", "op4", "op5", "op6", "op7", 
+                "op8", "op9", "op10", "op11", "op12", "op13", "op14", "op15"],
+      "operands": ["R0", "R1"],
+      "format": "wide",
+      "comment": "16 instructions → 4 bits opcode"
+    }
+  ]
+}
