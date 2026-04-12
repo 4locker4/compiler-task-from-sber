@@ -145,5 +145,5 @@ ruby main.rb <input.json>
 │   ├── test7.json
 │   ├── test8.json
 │   └── test9.json
-└── README.md            # Этот файл
+└── README.md
 ```
