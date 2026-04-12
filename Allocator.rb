@@ -1,16 +1,4 @@
 module CompileTest
-
-  # JSON struct:
-  # length[ num  = one_instr_length ], 
-  # fields[ fields_names : fields_size ], 
-  # instructions[ insns[ insns_names ], operands[ fields_names ], format[ format_name ], comment[ useless ]]
-
-  # I want to create a bit counter for every insn
-  # In the beginning I will count how many bits it have. Than I will choose filed, which I could increase.
-  # If there is no fields available to increase, I will create a reservation_field
-
-  # First of all, I need to count sizes of every field, then process every instr
-  
   class BitAllocator
 
     attr_reader :data_completed, :processed_formats
@@ -43,7 +31,7 @@ module CompileTest
           if res_insns.last[:fields][:f_bits]
             res_insns.last[:fields][:f_bits][:value] = f_bits
           end
-          
+
           if res_insns.last[:fields][:opcode_bits]
             res_insns.last[:fields][:opcode_bits][:value] = 
               opcode.to_s(2).rjust(opcode_bits_size, '0')

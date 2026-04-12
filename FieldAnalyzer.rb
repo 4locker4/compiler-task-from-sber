@@ -14,12 +14,10 @@ module CompileTest
       all_processed_formats = {}
 
       @instructions.each_with_index do |format, f_index|
-      # Here we need to process format fields. We need to know exact size of every field
         opcode_len = opcode_num_len(format)
         operands_size = sum_operands_size(format['operands'])
         curr_instr_len = format_len + opcode_len + operands_size
 
-        # if curr_instr_len < @length we will add the difference into last field, if we can
         processed_format = {}
         bit_counter = @length - 1
 
@@ -67,7 +65,7 @@ module CompileTest
         bit_counter -= size
       end
 
-      curr_instr_len  # Return updated value
+      curr_instr_len
     end
 
     def get_oprnd_size(operand, curr_instr_len)
@@ -86,15 +84,13 @@ module CompileTest
           curr_instr_len = @length
         end
 
-        [base_size, curr_instr_len]  # Return both
+        [base_size, curr_instr_len]
       else
         size = size_str.to_i
         [size, curr_instr_len]
       end
     end
 
-    # I put this into separated function, because if we need to process it 
-    # any other ways, it will be very helpful
     def process_format_field(processed_format, format_len, bit_counter)
       processed_format[:f_bits] = {
           name: "F",
