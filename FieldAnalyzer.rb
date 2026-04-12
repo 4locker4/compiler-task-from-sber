@@ -97,7 +97,7 @@ module CompileTest
     # any other ways, it will be very helpful
     def process_format_field(processed_format, format_len, bit_counter)
       processed_format[:f_bits] = {
-          oprnd_name: "F",
+          name: "F",
           msb: bit_counter,
           lsb: bit_counter - format_len + 1,
           value: nil
@@ -108,7 +108,7 @@ module CompileTest
 
     def process_opcode_field(processed_format, opcode_len, bit_counter)
       processed_format[:opcode_bits] = {
-          oprnd_name: "opcode",
+          name: "opcode",
           msb: bit_counter,
           lsb: bit_counter - opcode_len + 1,
           value: nil
